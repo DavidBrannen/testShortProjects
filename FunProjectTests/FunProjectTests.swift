@@ -11,15 +11,16 @@ class FunProjectTests: XCTestCase {
 
 
     func testProblem1() {
-        let inputs = [1, 2, 3, 4, 5]
+        let inputs = [1, 2, 3, 3, 3, 3, 3, 4, 5, 5, 6, 7]
+        let target = 3
         let solutions = 5
-            let result = Problem1.perform(inputs)
-            let solution = solutions
-            XCTAssertEqual(result, solution, "\(inputs) caused an error")
+        let result = Problem1.perform(inputs, target)
+        let solution = solutions
+        XCTAssertEqual(result, solution, "\(inputs), \(target) caused an error")
     }
     func testProblem2() {
-        let inputs = [1, 2, 8, 14, 5]
-        let solutions = 8
+        let inputs = [-1, -12, -17, -5, -14, -5]
+        let solutions = -5
         let result = Problem2.perform(inputs)
         let solution = solutions
         XCTAssertEqual(result, solution, "\(inputs) caused an error")
@@ -48,25 +49,36 @@ class FunProjectTests: XCTestCase {
 
 //1. Find the number of occurrences of an integer in a sorted array. (logarithmic solution preferred)
 struct Problem1 {
-    static func perform(_ arr: [Int]) -> Int {
-        return arr.count
+    static func perform(_ arr: [Int],_ target: Int) -> Int {
+        var intCount = 0
+        for r in arr {
+            if r == target {
+                intCount += 1
+            }
+            if r > target {break}
+        }
+        return intCount
     }
 }
 
 //2. Find the second-largest integer of a non-sorted array (also including cases for negative values).
 struct Problem2 {
     static func perform(_ arr: [Int]) -> Int {
-        var largest = 0
-        var second = 0
-        for x in arr {
-            if x > largest {
+        var largest = arr[0]
+        var second = arr[1]
+        if second > largest {
+            largest = second
+            second = arr[0]
+        }
+        for i in 1..<arr.count {
+            if arr[i] >= largest {
                 if largest > second {
                     second = largest
                 }
-                largest = x
+                largest = arr[i]
             } else {
-                if x > second {
-                    second = x
+                if arr[i] > second {
+                    second = arr[i]
                 }
             }
         }
